@@ -1,11 +1,20 @@
+import waterRoutes from "./routes/waterRoutes.js";
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import logger from "./utils/logger.js";
+import morganMiddleware from "./middlewares/morganMiddleware.js";
 
 dotenv.config();
 
 const app = express();
+
+// Middlewares
+app.use(express.json());
+app.use(morganMiddleware);
+
+// Roteamento
+app.use("/api/water", waterRoutes);
 
 // Conexão com o MongoDB
 const PORT = process.env.PORT || 5000;
