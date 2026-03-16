@@ -53,3 +53,65 @@ export const getWaterLogs = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const deleteWaterLog = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const deletedLog = await WaterLog.findByIdAndDelete(id);
+
+    if (!deletedLog) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Log não encontrado para exclusão" });
+    }
+
+    logger.info(`Log ${id} removido com sucesso.`);
+    return res
+      .status(200)
+      .json({ success: true, message: "Registro deletado com sucesso" });
+  } catch (e: any) {
+    logger.error(`Erro no Delete: ${e.message}`);
+    return res
+      .status(500)
+      .json({ success: false, message: "Erro ao deletar log" });
+  }
+};
+
+export const patchWaterLog = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { amount } = req.body;
+
+    if (!amount || amount <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Quantidade inválida. Insira um valor maior que zero",
+      });
+    }
+
+    const updatedLog = await WaterLog.findByIdAndUpdate(
+      id,
+      { $set: { amount } },
+      { new: true, runValidators: true },
+    );
+
+    if (!updatedLog) {
+      return res.status(404).json({
+        success: false,
+        message: "Log não encontrado",
+      });
+    }
+
+    logger.info(`Log ${id} atualizado para ${amount}ml`);
+    return res.status(200).json({
+      success: true,
+      message: "Registro atualizado com sucesso",
+      data: updatedLog,
+    });
+  } catch (e: any) {
+    logger.error(`Erro no Update: ${e.message}`);
+    return res
+      .status(500)
+      .json({ success: false, message: "Erro ao atualizar log" });
+  }
+};
