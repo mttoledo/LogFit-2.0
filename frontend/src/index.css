@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --color-brand-blue: #1d3442;
+  --color-brand-gray: #212226;
+  --color-brand-green: #22c959;
+  --color-brand-lgblue: #41daca;
+  --color-brand-mdblue: #006aac;
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+
+  @keyframes wave {
+    0% {
+      transform: translateX(-50%) skewY(-2deg);
+    }
+    50% {
+      transform: translateX(0%) skewY(2deg);
+    }
+    100% {
+      transform: translateX(-50%) skewY(-2deg);
+    }
+  }
+
+  --animate-wave: wave 3s ease-in-out infinite;
+}

@@ -4,10 +4,13 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import logger from "./utils/logger.js";
 import morganMiddleware from "./middlewares/morganMiddleware.js";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
+
+app.use(cors());
 
 // Middlewares
 app.use(express.json());
