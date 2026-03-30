@@ -1,6 +1,6 @@
 import api from "../services/api";
 import React, { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import logoImg from "../assets/logotipo.jpg";
 import { Input } from "../components/Inputs";
 
@@ -37,7 +37,7 @@ const RegisterPage = () => {
       console.log("Resposta do Servidor:", response.data.message);
       alert("Usuário cadastrado com sucesso!");
       navigate("/login");
-    } catch (error) {
+    } catch (error: any) {
       if (error.response) {
         alert(error.response.data.message);
       } else if (error.request) {
@@ -53,7 +53,7 @@ const RegisterPage = () => {
   return (
     <div className="w-full flex h-screen justify-center items-center bg-brand-blueargb">
       <main className="w-125 h-125 bg-brand-blue flex flex-col items-center p-10 rounded-2xl gap-4">
-        <img src={logoImg} alt="LogFit" className="w-[200px] shrink-0 mb-6" />
+        <img src={logoImg} alt="LogFit" className="w-50 shrink-0 mb-6" />
         <p className="text-white">Para começar, informe seus dados:</p>
 
         <form className="flex flex-col gap-4 w-full" onSubmit={handleSubmit}>
@@ -91,9 +91,12 @@ const RegisterPage = () => {
 
           <p className="text-white text-center">
             Já tem uma conta?{" "}
-            <span className="text-brand-lgblue hover:underline cursor-pointer">
+            <Link
+              to="/login"
+              className="text-brand-lgblue hover:underline cursor-pointer"
+            >
               Faça login
-            </span>
+            </Link>
           </p>
 
           <button
