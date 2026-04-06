@@ -28,4 +28,6 @@ const WaterLogSchema: Schema = new Schema(
   },
 );
 
+WaterLogSchema.index({ createdAt: 1 }, { expireAfterSeconds: 86400 });
+
 export default mongoose.model<IWaterLog>("WaterLog", WaterLogSchema);
