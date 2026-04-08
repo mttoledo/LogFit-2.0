@@ -39,8 +39,8 @@ const LoginPage = () => {
       console.log("Login bem-sucedido!", response.data);
 
       alert("Login realizado com sucesso!");
-
-      navigate("/dashboard");
+      localStorage.setItem("isLoggedIn", "true");
+      window.location.href = "/dashboard";
     } catch (error: any) {
       const mensagemErro =
         error.response?.data?.message ||

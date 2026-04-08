@@ -3,10 +3,18 @@ import WaterProgress from "./WaterProgress";
 import { Button } from "./Button";
 import api from "../services/api";
 
+interface LogEntry {
+  _id: string;
+  amount: number;
+  createdAt: string;
+}
+
 const WaterModule = () => {
   const [totalIngerido, setTotalIngerido] = useState(0);
   const [metaDiaria, setMetaDiaria] = useState(2000);
   const [inputValue, setInputValue] = useState("");
+
+  const [logs, setLogs] = useState<LogEntry[]>([]);
 
   // Cálculo da porcentagem para o componente visual
   const percentage = Math.min((totalIngerido / metaDiaria) * 100, 100);
@@ -22,6 +30,7 @@ const WaterModule = () => {
       const waterResponse = await api.get(`/water?date=${todayDate}`);
 
       setTotalIngerido(waterResponse.data.totalMl || 0);
+      setLogs(waterResponse.data.data || []);
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
     }
@@ -31,6 +40,7 @@ const WaterModule = () => {
     loadWaterModuleData();
   }, []);
 
+  // Função para salvar o volume consumido no DB
   const handleAddWater = async () => {
     const volume = Number(inputValue);
     if (volume > 0 && !isNaN(volume)) {
@@ -75,9 +85,27 @@ const WaterModule = () => {
           className="border p-1 rounded"
         />
       </label>
-      <Button className="mt-4" onClick={handleAddWater}>
+      <Button className="my-4" onClick={handleAddWater}>
         Registrar Valor
       </Button>
+      <div className="border rounded w-96 h-20 overflow-y-scroll text-sm px-3 py-1">
+        {logs.length > 0 ? (
+          logs.map((log) => (
+            <p key={log._id}>
+              <span>
+                💧 {log.amount}ml ingerido às{" "}
+                {new Date(log.createdAt).toLocaleTimeString("pt-BR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+                h
+              </span>
+            </p>
+          ))
+        ) : (
+          <p>Nenhum registro hoje</p>
+        )}
+      </div>
     </div>
   );
 };
