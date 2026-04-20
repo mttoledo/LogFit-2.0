@@ -13,6 +13,7 @@ const RegisterPage = () => {
     senha: "",
     idade: "",
     peso: "",
+    bf: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,15 +84,24 @@ const RegisterPage = () => {
             required
             data-testid="input-idade"
           ></Input>
-          <Input
-            placeholder="Seu Peso:"
-            min="1"
-            name="peso"
-            onChange={handleChange}
-            value={form.peso}
-            required
-            data-testid="input-peso"
-          ></Input>
+          <div className="grid grid-cols-2 w-full gap-2">
+            <Input
+              placeholder="Seu Peso:"
+              min="1"
+              name="peso"
+              onChange={handleChange}
+              value={form.peso}
+              required
+              data-testid="input-peso"
+            />
+            <Input
+              placeholder="Percentual de gordura:"
+              min="1"
+              name="bf"
+              onChange={handleChange}
+              value={form.bf}
+            />
+          </div>
 
           <p className="text-white text-center">
             Já tem uma conta?{" "}

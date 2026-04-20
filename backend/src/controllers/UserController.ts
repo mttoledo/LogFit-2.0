@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
 export const registerUser = async (req: Request, res: Response) => {
-  const { usuario, senha, idade, peso } = req.body;
+  const { usuario, senha, idade, peso, bf } = req.body;
 
   try {
     logger.info(`Tentativa de registro: ${usuario}`);
@@ -16,7 +16,7 @@ export const registerUser = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Usuário já cadastrado." });
     }
 
-    const newUser = new User({ usuario, senha, idade, peso });
+    const newUser = new User({ usuario, senha, idade, peso, bf });
     await newUser.save();
 
     logger.info(`Usuário criado: ${usuario}`);

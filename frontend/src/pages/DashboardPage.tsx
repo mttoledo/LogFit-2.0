@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../components/Header";
 import WaterModule from "../components/WaterModule";
+import CaloriesModule from "../components/CaloriesModule";
 
 const DashboardPage = () => {
   return (
@@ -8,6 +9,7 @@ const DashboardPage = () => {
       <Header />
       <main className="grid grid-cols-[repeat(2,minmax(0,490px))] gap-4 m-auto max-w-250">
         <WaterModule />
+        <CaloriesModule />
       </main>
     </div>
   );
