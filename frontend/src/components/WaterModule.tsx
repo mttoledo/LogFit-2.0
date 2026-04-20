@@ -76,19 +76,24 @@ const WaterModule = () => {
           </div>
         </div>
       </div>
-      <label className="flex flex-col text-xs w-96">
-        Volume (ml):
+      <div className="flex items-center mb-5 w-96 justify-between">
         <input
           type="number"
+          placeholder="Volume (ml):"
           value={inputValue}
+          data-testid="water-input"
           onChange={(e) => setInputValue(e.target.value)}
-          className="border p-1 rounded"
+          className="border p-1 rounded placeholder:text-sm px-2 placeholder:text-black focus:outline-none"
         />
-      </label>
-      <Button className="my-4" onClick={handleAddWater}>
-        Registrar Valor
-      </Button>
-      <div className="border rounded w-96 h-20 overflow-y-scroll text-sm px-3 py-1">
+        <Button
+          className=""
+          data-testid="water-button"
+          onClick={handleAddWater}
+        >
+          Registrar
+        </Button>
+      </div>
+      <div className="border rounded w-96 h-20 overflow-y-scroll text-sm px-2 py-1">
         {logs.length > 0 ? (
           logs.map((log) => (
             <p key={log._id}>

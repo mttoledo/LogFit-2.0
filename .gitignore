@@ -2,3 +2,5 @@ node_modules/
 dist/
 logs/
 .env
+cypress/screenshots
+cypress/videos

@@ -67,6 +67,7 @@ const LoginPage = () => {
             name="usuario"
             value={form.usuario}
             required
+            data-testid="login-usuario"
           />
           <Input
             placeholder="Sua Senha:"
@@ -75,6 +76,7 @@ const LoginPage = () => {
             name="senha"
             value={form.senha}
             required
+            data-testid="login-senha"
           />
           <div className="flex flex-row-reverse justify-end gap-2">
             <label htmlFor="maintain-logged" className="text-white">
@@ -100,6 +102,7 @@ const LoginPage = () => {
           </p>
           <button
             disabled={loading}
+            data-testid="login-button"
             className="bg-brand-mdblue text-white rounded-lg transition-all active:scale-95 cursor-pointer p-3 w-full hover:bg-brand-lgblue font-medium"
           >
             {loading ? "Carregando..." : "Logar"}

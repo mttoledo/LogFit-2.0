@@ -6,6 +6,7 @@ export interface IUser extends Document {
   senha: string;
   idade: number;
   peso: number;
+  bf: number;
   createdAt: Date;
 }
 
@@ -27,6 +28,9 @@ const UserSchema = new Schema<IUser>({
   peso: {
     type: Number,
     required: true,
+  },
+  bf: {
+    type: Number,
   },
   createdAt: {
     type: Date,
