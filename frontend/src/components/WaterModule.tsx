@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import WaterProgress from "./WaterProgress";
 import { Button } from "./Button";
 import api from "../services/api";

@@ -1,6 +1,6 @@
 import api from "../services/api";
 import React, { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logoImg from "../assets/logotipo.jpg";
 import { Input } from "../components/Inputs";
 

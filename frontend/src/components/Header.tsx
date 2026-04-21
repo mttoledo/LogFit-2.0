@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import logoImg from "../assets/logotipo.jpg";
 import { Button } from "./Button";
 import { Menu, X } from "lucide-react";
 import api from "../services/api";
-
-interface Props {}
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,11 +21,7 @@ const Header = () => {
   return (
     <header className="relative w-full h-20 flex justify-between items-center px-8">
       <div></div>
-      <img
-        src={logoImg}
-        alt="LogFit"
-        className="ml-[78px] w-[200px] shrink-0 pt-[24px]"
-      />
+      <img src={logoImg} alt="LogFit" className="ml-19.5 w-50 shrink-0 pt-6" />
       <Button className="hidden md:block" onClick={handleLogout}>
         Sair
       </Button>

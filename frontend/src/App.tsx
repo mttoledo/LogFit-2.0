@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import api from "./services/api";
 
 // Components
-import Header from "./components/Header";
-import WaterModule from "./components/WaterModule";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 // Pages

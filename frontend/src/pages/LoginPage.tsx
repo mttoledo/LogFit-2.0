@@ -1,11 +1,10 @@
-import React, { useState, type ChangeEvent } from "react";
+import React, { useState } from "react";
 import logoImg from "../assets/logotipo.jpg";
 import { Input } from "../components/Inputs";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import api from "../services/api";
 
 const LoginPage = () => {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     usuario: "",

@@ -1,4 +1,10 @@
-export const Input = ({ placeholder, type = "text", ...props }) => {
+interface InputProps {
+  placeholder: any;
+  type?: string;
+  [x: string]: any;
+}
+
+export const Input = ({ placeholder, type = "text", ...props }: InputProps) => {
   return (
     <input
       type={type}
