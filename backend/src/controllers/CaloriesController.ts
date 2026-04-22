@@ -2,45 +2,50 @@ import { Request, Response } from "express";
 import logger from "../utils/logger.js";
 import CaloriesLog from "../models/CaloriesLog.js";
 import jwt from "jsonwebtoken";
-import { searchFood } from "../services/fatSecret.js";
+import FoodList from "../models/Food.js";
 
-export const handleSearch = async (req: Request, res: Response) => {
+// Controller de busca do alimento
+export const searchFood = async (req: Request, res: Response) => {
+  const { q } = req.query;
+
+  if (!q || typeof q !== "string") {
+    return res
+      .status(400)
+      .json({ success: false, message: "Termo de busca inválido" });
+  }
+
   try {
-    const { q } = req.query;
+    const foods = await FoodList.find({
+      description: { $regex: q, $options: "i" },
+    })
+      .limit(20)
+      .lean();
 
-    if (!q || typeof q !== "string") {
-      return res.status(400).json({
-        success: false,
-        message: "O termo de busca é obrigatório",
-      });
-    }
+    // Normalização para que energy_kcal seja sempre number
+    const formattedFoods = foods.map((food) => ({
+      _id: food._id,
+      description: food.description,
+      category: food.category,
+      energy_kcal: isNaN(Number(food.energy_kcal))
+        ? 0
+        : Number(food.energy_kcal),
+      baseUnit: "100g",
+    }));
 
-    const alimentos = await searchFood(q);
-
-    return res.status(200).json({
-      success: true,
-      data: alimentos,
-    });
-  } catch (error: any) {
-    logger.error(`Erro ao buscar alimentos ${error.message}`);
-    return res.status(500).json({
-      success: false,
-      message: "Erro ao buscar alimentos na base de dados",
-    });
+    res.status(200).json({ success: true, data: formattedFoods });
+  } catch (error) {
+    console.error("Erro na busca local:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Erro ao processar busca" });
   }
 };
 
-export const addCaloriesLog = async (req: Request, res: Response) => {
-  try {
-    const { type, amount, unit, calories } = req.body;
+export const saveCaloriesLog = async (req: Request, res: Response) => {
+  const { foodName, kcalPer100g, amount } = req.body;
 
-    if (!type || !amount || !unit || !calories) {
-      return res.status(400).json({
-        success: false,
-        message:
-          "Dados incompletos: Alimento, peso, unidade e calorias são necessários.",
-      });
-    }
+  try {
+    const totalKcal = (Number(kcalPer100g) * Number(amount)) / 100;
 
     const token = req.cookies.token;
 
@@ -56,27 +61,17 @@ export const addCaloriesLog = async (req: Request, res: Response) => {
     ) as { id: string };
 
     const newLog = await CaloriesLog.create({
-      type,
-      amount,
-      unit,
-      calories,
       userId: decoded.id,
+      foodName,
+      amount,
+      kcalPer100g,
+      totalKcal: Number(totalKcal.toFixed(2)),
+      consumedAt: new Date(),
     });
 
-    logger.info(
-      `Log de caloria registrado: ${amount}${unit} de ${type}, equivalente a ${calories} para o usuário ${decoded.id}`,
-    );
-
-    return res.status(201).json({
-      success: true,
-      data: newLog,
-    });
-  } catch (error: any) {
-    logger.error(`Erro ao salvar log de calorias: ${error.message}`);
-    return res.status(500).json({
-      success: false,
-      message: "Erro interno no servidor ao tentar salvar os dados.",
-    });
+    res.status(201).json({ success: true, data: newLog });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Erro ao salvar log" });
   }
 };
 
@@ -108,7 +103,7 @@ export const getCaloriesLogs = async (req: Request, res: Response) => {
       },
     }).sort({ createdAt: -1 });
 
-    const totalCalories = logs.reduce((acc, log) => acc + log.calories, 0);
+    const totalCalories = logs.reduce((acc, log) => acc + log.totalKcal, 0);
 
     return res.status(200).json({
       success: true,

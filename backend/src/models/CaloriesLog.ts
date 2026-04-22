@@ -2,10 +2,10 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface ICaloriesLog extends Document {
   userId: mongoose.Types.ObjectId;
-  type: string;
-  unit: string;
+  foodName: string;
   amount: number;
-  calories: number;
+  kcalPer100g: number;
+  totalKcal: number;
   consumedAt: Date;
 }
 
@@ -16,22 +16,22 @@ const CaloriesLogSchema: Schema = new Schema(
       ref: "User",
       required: [true, "O ID do usuário é obrigatório"],
     },
-    type: {
+    foodName: {
       type: String,
-      required: [true, "O tipo de alimento é obrigatório"],
-    },
-    unit: {
-      type: String,
-      required: [true, "É necessário constar a unidade de medida"],
+      required: [true, "O nome do alimento é obrigatório"],
     },
     amount: {
       type: Number,
       required: [true, "A quantidade em g é obrigatória"],
       min: [1, "A quantidade mínima para registro é de 1g"],
     },
-    calories: {
+    kcalPer100g: {
       type: Number,
       required: [true, "O cálculo de calorias é obrigatório"],
+    },
+    totalKcal: {
+      type: Number,
+      required: [true, "O total de calorias é obrigatório"],
     },
     consumedAt: {
       type: Date,

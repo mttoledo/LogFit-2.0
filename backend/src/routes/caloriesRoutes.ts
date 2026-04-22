@@ -1,14 +1,14 @@
 import { Router } from "express";
 import {
-  addCaloriesLog,
-  handleSearch,
+  saveCaloriesLog,
+  searchFood,
   getCaloriesLogs,
 } from "../controllers/CaloriesController.js";
 
 const router = Router();
 
-router.get("/search", handleSearch);
+router.get("/search", searchFood);
 router.get("/", getCaloriesLogs);
-router.post("/", addCaloriesLog);
+router.post("/", saveCaloriesLog);
 
 export default router;
